@@ -10,7 +10,7 @@ endif::[]
 :toclevels: 5
 
 [.left]
-image::misc/logo.png[vRP,1273,616]
+image::misc/logo.png[vRP,800,300]
 
 _FiveM RP addon/framework_ +
 The project aim to create a generic and simple RP framework to prevent everyone from reinventing the wheel. +

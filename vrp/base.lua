@@ -1,3 +1,4 @@
+print("VRP - Infinity start to load")
 local Proxy = module("lib/Proxy")
 local Tunnel = module("lib/Tunnel")
 local Luang = module("lib/Luang")

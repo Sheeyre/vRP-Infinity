@@ -1,24 +1,12 @@
 -- a basic garage implementation
 
--- vehicle db
-vRP.prepare("vRP/vehicles_table", [[
-CREATE TABLE IF NOT EXISTS vrp_user_vehicles(
-  user_id INTEGER,
-  vehicle VARCHAR(100),
-  CONSTRAINT pk_user_vehicles PRIMARY KEY(user_id,vehicle),
-  CONSTRAINT fk_user_vehicles_users FOREIGN KEY(user_id) REFERENCES vrp_users(id) ON DELETE CASCADE
-);
-]])
+
 
 vRP.prepare("vRP/add_vehicle","INSERT IGNORE INTO vrp_user_vehicles(user_id,vehicle) VALUES(@user_id,@vehicle)")
 vRP.prepare("vRP/remove_vehicle","DELETE FROM vrp_user_vehicles WHERE user_id = @user_id AND vehicle = @vehicle")
 vRP.prepare("vRP/get_vehicles","SELECT vehicle FROM vrp_user_vehicles WHERE user_id = @user_id")
 vRP.prepare("vRP/get_vehicle","SELECT vehicle FROM vrp_user_vehicles WHERE user_id = @user_id AND vehicle = @vehicle")
 
--- init
-async(function()
-  vRP.execute("vRP/vehicles_table")
-end)
 
 -- load config
 

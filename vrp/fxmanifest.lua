@@ -31,6 +31,7 @@ client_scripts {
 server_scripts{
     "lib/utils.lua",
     "base.lua",
+    "modules/storage/database.lua",
     "modules/gui.lua",
     "modules/group.lua",
     "modules/admin.lua",

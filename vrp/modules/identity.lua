@@ -7,21 +7,7 @@ local sanitizes = module("cfg/sanitizes")
 
 -- this module describe the identity system
 
--- init sql
-vRP.prepare("vRP/identity_tables", [[
-CREATE TABLE IF NOT EXISTS vrp_user_identities(
-  user_id INTEGER,
-  registration VARCHAR(20),
-  phone VARCHAR(20),
-  firstname VARCHAR(50),
-  name VARCHAR(50),
-  age INTEGER,
-  CONSTRAINT pk_user_identities PRIMARY KEY(user_id),
-  CONSTRAINT fk_user_identities_users FOREIGN KEY(user_id) REFERENCES vrp_users(id) ON DELETE CASCADE,
-  INDEX(registration),
-  INDEX(phone)
-);
-]])
+
 
 vRP.prepare("vRP/get_user_identity","SELECT * FROM vrp_user_identities WHERE user_id = @user_id")
 vRP.prepare("vRP/init_user_identity","INSERT IGNORE INTO vrp_user_identities(user_id,registration,phone,firstname,name,age) VALUES(@user_id,@registration,@phone,@firstname,@name,@age)")
@@ -29,10 +15,7 @@ vRP.prepare("vRP/update_user_identity","UPDATE vrp_user_identities SET firstname
 vRP.prepare("vRP/get_userbyreg","SELECT user_id FROM vrp_user_identities WHERE registration = @registration")
 vRP.prepare("vRP/get_userbyphone","SELECT user_id FROM vrp_user_identities WHERE phone = @phone")
 
--- init
-async(function()
-  vRP.execute("vRP/identity_tables")
-end)
+
 
 -- api
 

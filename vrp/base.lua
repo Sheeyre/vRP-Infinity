@@ -147,36 +147,6 @@ Citizen.CreateThread(function()
 end)
 
 -- queries
-vRP.prepare("vRP/base_tables",[[
-CREATE TABLE IF NOT EXISTS vrp_users(
-  id INTEGER AUTO_INCREMENT,
-  last_login VARCHAR(255),
-  whitelisted BOOLEAN,
-  banned BOOLEAN,
-  CONSTRAINT pk_user PRIMARY KEY(id)
-);
-
-CREATE TABLE IF NOT EXISTS vrp_user_ids(
-  identifier VARCHAR(100),
-  user_id INTEGER,
-  CONSTRAINT pk_user_ids PRIMARY KEY(identifier),
-  CONSTRAINT fk_user_ids_users FOREIGN KEY(user_id) REFERENCES vrp_users(id) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS vrp_user_data(
-  user_id INTEGER,
-  dkey VARCHAR(100),
-  dvalue TEXT,
-  CONSTRAINT pk_user_data PRIMARY KEY(user_id,dkey),
-  CONSTRAINT fk_user_data_users FOREIGN KEY(user_id) REFERENCES vrp_users(id) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS vrp_srv_data(
-  dkey VARCHAR(100),
-  dvalue TEXT,
-  CONSTRAINT pk_srv_data PRIMARY KEY(dkey)
-);
-]])
 
 vRP.prepare("vRP/create_user","INSERT INTO vrp_users(whitelisted,banned) VALUES(false,false); SELECT LAST_INSERT_ID() AS id")
 vRP.prepare("vRP/add_identifier","INSERT INTO vrp_user_ids(identifier,user_id) VALUES(@identifier,@user_id)")
@@ -195,11 +165,7 @@ vRP.prepare("vRP/set_whitelisted","UPDATE vrp_users SET whitelisted = @whitelist
 vRP.prepare("vRP/set_last_login","UPDATE vrp_users SET last_login = @last_login WHERE id = @user_id")
 vRP.prepare("vRP/get_last_login","SELECT last_login FROM vrp_users WHERE id = @user_id")
 
--- init tables
-print("[vRP] init base tables")
-async(function()
-  vRP.execute("vRP/base_tables")
-end)
+
 
 -- identification system
 

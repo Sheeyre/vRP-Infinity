@@ -4,28 +4,13 @@
 local lang = vRP.lang
 local cfg = module("cfg/homes")
 
--- sql
 
-vRP.prepare("vRP/home_tables", [[
-CREATE TABLE IF NOT EXISTS vrp_user_homes(
-  user_id INTEGER,
-  home VARCHAR(100),
-  number INTEGER,
-  CONSTRAINT pk_user_homes PRIMARY KEY(user_id),
-  CONSTRAINT fk_user_homes_users FOREIGN KEY(user_id) REFERENCES vrp_users(id) ON DELETE CASCADE,
-  UNIQUE(home,number)
-);
-]])
 
 vRP.prepare("vRP/get_address","SELECT home, number FROM vrp_user_homes WHERE user_id = @user_id")
 vRP.prepare("vRP/get_home_owner","SELECT user_id FROM vrp_user_homes WHERE home = @home AND number = @number")
 vRP.prepare("vRP/rm_address","DELETE FROM vrp_user_homes WHERE user_id = @user_id")
 vRP.prepare("vRP/set_address","REPLACE INTO vrp_user_homes(user_id,home,number) VALUES(@user_id,@home,@number)")
 
--- init
-async(function()
-  vRP.execute("vRP/home_tables")
-end)
 
 -- api
 

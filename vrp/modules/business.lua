@@ -7,19 +7,7 @@ local lang = vRP.lang
 
 local sanitizes = module("cfg/sanitizes")
 
--- sql
-vRP.prepare("vRP/business_tables",[[
-CREATE TABLE IF NOT EXISTS vrp_user_business(
-  user_id INTEGER,
-  name VARCHAR(30),
-  description TEXT,
-  capital INTEGER,
-  laundered INTEGER,
-  reset_timestamp INTEGER,
-  CONSTRAINT pk_user_business PRIMARY KEY(user_id),
-  CONSTRAINT fk_user_business_users FOREIGN KEY(user_id) REFERENCES vrp_users(id) ON DELETE CASCADE
-);
-]])
+
 
 vRP.prepare("vRP/create_business","INSERT IGNORE INTO vrp_user_business(user_id,name,description,capital,laundered,reset_timestamp) VALUES(@user_id,@name,'',@capital,0,@time)")
 vRP.prepare("vRP/delete_business","DELETE FROM vrp_user_business WHERE user_id = @user_id")
@@ -29,10 +17,6 @@ vRP.prepare("vRP/add_laundered","UPDATE vrp_user_business SET laundered = launde
 vRP.prepare("vRP/get_business_page","SELECT user_id,name,description,capital FROM vrp_user_business ORDER BY capital DESC LIMIT @b,@n")
 vRP.prepare("vRP/reset_transfer","UPDATE vrp_user_business SET laundered = 0, reset_timestamp = @time WHERE user_id = @user_id")
 
--- init
-async(function()
-vRP.execute("vRP/business_tables")
-end)
 
 -- api
 
